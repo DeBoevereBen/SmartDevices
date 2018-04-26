@@ -56,7 +56,7 @@ CREATE TABLE `highscores` (
   PRIMARY KEY (`id`),
   KEY `userId_idx` (`userId`),
   KEY `difficultyId_idx` (`difficultyiD`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -65,7 +65,7 @@ CREATE TABLE `highscores` (
 
 LOCK TABLES `highscores` WRITE;
 /*!40000 ALTER TABLE `highscores` DISABLE KEYS */;
-INSERT INTO `highscores` VALUES (1,1,1000000,1);
+INSERT INTO `highscores` VALUES (4,1,10000,1);
 /*!40000 ALTER TABLE `highscores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -103,4 +103,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-25 13:02:50
+-- Dump completed on 2018-04-25 13:57:28
