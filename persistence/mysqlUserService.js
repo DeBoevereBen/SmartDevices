@@ -1,7 +1,7 @@
 const mysql = require('mysql');
 const User = require('../domain/User');
 
-const Database = (function(){
+const Database = (function () {
 
     const config = {
         host: "localhost",
@@ -14,7 +14,7 @@ const Database = (function(){
 
     let pool = null;
 
-    function Database(dbName, username, password){
+    function Database(dbName, username, password) {
         config.database = dbName;
         config.user = username;
         config.password = password;
@@ -23,10 +23,10 @@ const Database = (function(){
     }
 
     // resolves with a user, or an error object if the user is not found
-    Database.prototype.findUser = function(username, password){
-        return new Promise(function(resolve, reject){
+    Database.prototype.findUser = function (username, password) {
+        return new Promise(function (resolve, reject) {
             pool.getConnection(function (err, connection) {
-                if(err) reject(err);
+                if (err) reject(err);
 
                 connection.query({
                     sql: Q.FIND_USER_BY_NAME,
@@ -36,11 +36,12 @@ const Database = (function(){
 
                     connection.release();
 
-                    if(results.length === 0){
+                    if (results.length === 0) {
                         resolve({"notfound": "user not found"});
+                    } else {
+                        let user = new User(results[0].username, results[0].password);
+                        resolve(user);
                     }
-                    let user = new User(results[0].username, results[0].password);
-                    resolve(user);
                 });
             });
         });

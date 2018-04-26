@@ -15,22 +15,3 @@ router.get('/', function (req, res, next) {
 });
 
 module.exports = router;
-
-/*
-
-router.get('/', function(req, res, next) {
-    userService
-        .findUser("joske","vermeule")
-        .then(result => {
-          if(result.notfound){
-            console.log("User not found");
-          } else {
-              console.log(user);
-          }
-
-        });
-
-  res.render('index', { title: 'Express' });
-
-
-*/
