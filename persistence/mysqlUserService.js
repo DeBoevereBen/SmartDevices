@@ -17,7 +17,9 @@ const Database = (function () {
             "from highscores h " +
             "join users u on h.userId = u.id " +
             "join difficulty d on d.id = h.difficultyId",
-        ADD_HIGHSCORE: "INSERT INTO highscores(userId, time, difficultyId) VALUES(?,?,?)"
+        ADD_HIGHSCORE: "INSERT INTO highscores(userId, time, difficultyId) VALUES(?,?,?)",
+        ADD_USER: "INSERT INTO users(username, password) VALUES(?, ?)",
+        CHECK_USERNAME_UNIQUE: "SELECT * FROM users WHERE username = ?"
     };
 
     let pool = null;
@@ -29,6 +31,55 @@ const Database = (function () {
 
         pool = mysql.createPool(config);
     }
+
+    Database.prototype.usernameExists = function (username) {
+
+        return new Promise(function (resolve, reject) {
+            pool.getConnection(function (err, connection) {
+                if (err) reject(err);
+                connection.query({
+                    sql: Q.CHECK_USERNAME_UNIQUE,
+                    values: [username]
+                }, function (error, results, fields) {
+                    console.log(results);
+                    connection.release();
+                    if (error) reject(error);
+                    else {
+                        if (results.length === 0) {
+                            resolve({already_exists: false});
+                        } else {
+                            resolve({already_exists: true});
+                        }
+                    }
+                })
+            })
+        })
+
+    };
+
+    Database.prototype.addUser = function (username, password) {
+        let self = this;
+        return new Promise(function (resolve, reject) {
+            self.usernameExists(username)
+                .then(result => {
+                    if (result.already_exists) {
+                        reject({already_exists: "Username is taken"});
+                    } else {
+                        pool.getConnection(function (err, connection) {
+                            if (err) reject(err);
+                            connection.query({
+                                sql: Q.ADD_USER,
+                                values: [username, password]
+                            }, function (error, results, fields) {
+                                connection.release();
+                                if (error) reject(error);
+                                else resolve({succes: true});
+                            });
+                        });
+                    }
+                })
+        })
+    };
 
     // resolves with a user, or an error object if the user is not found
     Database.prototype.findUser = function (username, password) {
@@ -118,7 +169,6 @@ const Database = (function () {
                 return new Promise(function(resolve, reject){
                     pool.getConnection(function (err, connection) {
                         if(err) reject(err);
-
                         connection.query({
                             sql: Q.ADD_HIGHSCORE,
                             values: [userId, time, difficultyObject.id]
@@ -128,9 +178,6 @@ const Database = (function () {
                             else{
                                 resolve({statusCode: "200"});
                             }
-
-
-
                         });
                     });
                 });

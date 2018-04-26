@@ -8,8 +8,9 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-    let username = req.body.username;
+    let username = req.body.user;
     let password = req.body.password;
+    console.log(username, password);
     userService.findUser(username, password)
         .then(result => {
             if (result.notfound) {
@@ -17,21 +18,35 @@ router.post('/', function (req, res, next) {
                 res.render("login", {login_error: "User not found..."})
             } else {
                 console.log(result);
-                res.render("index");
+                req.session.user = result;
+                res.render("index", {username: result.username});
             }
         })
         .catch(err => {
             console.error(err);
-            res.render("login", {login_error: "Something went wrong..."})
+            res.render("/login", {login_error: "Something went wrong..."})
         });
 });
 
 router.post('/register', function (req, res, next) {
     console.log(req.body);
-    if (req.body.password !== req.body.confirmPassword) {
+    let username = req.body.user;
+    let password = req.body.password;
+    if (password !== req.body.confirmPassword) {
         res.render("login", {registration_error: "passwords don't match"})
+    } else {
+        userService.addUser(username, password)
+            .then(result => {
+                if (result.succes) {
+                    res.render("login", {message: "Succesfully registered. You can now login."})
+                } else {
+                    res.render("login", {registration_error: result.already_exists})
+                }
+            })
+            .catch(err => {
+                res.render("login", {registration_error: "Something went wrong"})
+            });
     }
-    res.send("register");
 });
 
 module.exports = router;
