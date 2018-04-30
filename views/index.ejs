@@ -14,5 +14,17 @@
     <h2>Oops no user in session</h2>
     <% } %>
 </header>
+
+
+<form action="/message" method="post">
+    <input type="text" name="message" id="message" placeholder="message">
+    <input type="submit" value="send">
+</form>
+
+
+
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/javascripts/index.js"></script>
 </body>
 </html>
