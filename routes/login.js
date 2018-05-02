@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const sqluserService = require("./../persistence/mysqlUserService.js");
-const userService = new sqluserService("arduino_racer");
+const Db = require("../persistence/database.js");
+const db = new Db("arduino_racer");
 
 
 router.get('/', function (req, res, next) {
@@ -12,7 +12,7 @@ router.post('/', function (req, res, next) {
     let username = req.body.user;
     let password = req.body.password;
     console.log(username, password);
-    userService.findUser(username, password)
+    db.findUser(username, password)
         .then(result => {
             if (result.notfound) {
                 console.log(result);
@@ -36,7 +36,7 @@ router.post('/register', function (req, res, next) {
     if (password !== req.body.confirmPassword) {
         res.render("login", {registration_error: "passwords don't match"})
     } else {
-        userService.addUser(username, password)
+        db.addUser(username, password)
             .then(result => {
                 if (result.succes) {
                     res.render("login", {message: "Succesfully registered. You can now login."})

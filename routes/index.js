@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
-const MysqlUserService = require('../persistence/mysqlUserService');
-var userService = new MysqlUserService("arduino_racer");
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
     let user = req.session.user;
     console.log("logged in user: ", user);
+
     if (user === undefined || user === null) {
         res.render("login");
     } else {
