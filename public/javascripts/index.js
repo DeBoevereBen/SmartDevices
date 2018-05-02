@@ -26,6 +26,8 @@ document.addEventListener("DOMContentLoaded", function () {
         })
     } );
 
+    socket.on("volume", volume => setVolume(volume));
+
     setInterval(() => logSpeed(socket), 200);
 
 });
@@ -38,6 +40,12 @@ function setMovement(command){
 
     // all variables are global, so we can use this fancy javascript to set the variable to true
     this[command] = true;
+}
+
+function setVolume(volume){
+    console.log(volume);
+    let music = Dom.get('music');
+    music.volume = volume;
 }
 
 function logSpeed(socket){

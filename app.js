@@ -12,7 +12,6 @@ const sessionConfig = {
 };
 
 const app = express();
-const ArduinoSerial = require('./domain/socket/ArduinoSerial');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -58,27 +57,5 @@ app.use(function (err, req, res, next) {
     res.render('error');
 });
 
-function onOpen() {
-    console.log("open connection");
-
-}
-
-function onReceiveData(data) {
-    console.log("Received data: " + data);
-
-
-    // socket.emit("temperature", data);
-}
-
-function write(data) {
-    console.log("sending to serial: " + data);
-    this.port.write(data + "\n");
-}
-
-// let arduino = new ArduinoSerial("COM5", 9600);
-// arduino.onOpen = onOpen.bind(arduino);
-// arduino.onReceiveData = onReceiveData.bind(arduino);
-// arduino.write = write.bind(arduino);
-// arduino.open();
 
 module.exports = app;

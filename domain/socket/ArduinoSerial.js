@@ -8,11 +8,12 @@ const ArduinoSerial = (function () {
     function ArduinoSerial(portname, baudRate) {
         this.portname = portname;
         this.baudRate = baudRate;
+        this.websocket = null;
 
         // default event listeners
-        this.onOpen = () => console.log("open");
-        this.onReceiveData = (data) => console.log("Receiving data");
-        this.write = (data) => console.log("overwrite sendData to send data");
+        this.onOpen = onOpen;
+        this.onReceiveData = onReceiveData;
+        this.write = write;
         this.showError = (err) => console.error(err);
     }
 
@@ -26,6 +27,38 @@ const ArduinoSerial = (function () {
         this.port.on('open', this.onOpen);
         parser.on('data', this.onReceiveData);
         this.port.on('error', this.showError)
+    }
+
+
+    function onOpen() {
+        console.log("open connection");
+
+    }
+
+    function onReceiveData(command) {
+        console.log("Received data: " + command);
+
+        let movementCommands = ["left", "right", "break", "accelerate"];
+
+        // this should be "left", "right", "break" or "accelerate"
+        if(movementCommands.indexOf(command) !== -1){
+            websocket.emitCommand(command);
+        }
+
+        // volume command format: "volume 0.43"
+        if(command.indexOf("volume") !== -1){
+            let volume = parseFloat(command.split(" ")[1]);
+
+            websocket.emitCommand("volume", volume)
+        }
+
+
+        // socket.emit("temperature", data);
+    }
+
+    function write(data) {
+        console.log("sending to serial: " + data);
+        this.port.write(data + "\n");
     }
 
     // should wait untill the arduino has sent a ready message (handshake)
