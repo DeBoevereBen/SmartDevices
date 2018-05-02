@@ -26,6 +26,8 @@ document.addEventListener("DOMContentLoaded", function () {
         })
     } );
 
+    setInterval(() => logSpeed(socket), 200);
+
 });
 
 function setMovement(command){
@@ -36,4 +38,10 @@ function setMovement(command){
 
     // all variables are global, so we can use this fancy javascript to set the variable to true
     this[command] = true;
+}
+
+function logSpeed(socket){
+
+    let realSpeed =  5 * Math.round(speed/500);
+    socket.emit("speed", realSpeed);
 }

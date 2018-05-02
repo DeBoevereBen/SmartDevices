@@ -11,15 +11,19 @@ let SocketModule = (function () {
 
 
             this.emitCommand(this.movementCommands.accelerate, null);
+
+            this.socket.on("speed", data => console.log(data));
         });
 
         // define constants for movementCommands
-        this.commands = {
+        this.movementCommands = {
             left: "left",
             right: "right",
             break: "break",
             accelerate: "accelerate"
         }
+
+
     }
 
     SocketModule.prototype.emitCommand = function(name, data){
