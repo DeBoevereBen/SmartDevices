@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+<head>
+    <title>Index</title>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+</head>
+<body>
+<header>
+    <a href="logout">Logout</a>
+    <h1>Bla bla bla</h1>
+    <% if (locals.username !== undefined) { %>
+    <h2>Welcome <%= username %> </h2>
+    <% } else { %>
+    <h2>Oops no user in session</h2>
+    <% } %>
+</header>
+</body>
 </html>

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <title>Login</title>
+</head>
+<body>
+<h1>Welcome to our awesome racing game!</h1>
+<h2>Please login or register to continue.</h2>
+
+<% if (locals.message) { %>
+<p class="succes"><%= locals.message %> </p>
+<% } %>
+
+<form action="/login" method="post">
+    <fieldset>
+        <legend>Login</legend>
+        <input type="text" placeholder="Username" name="user">
+        <input type="password" placeholder="Passphrase" name="password">
+        <% if (locals.login_error) { %>
+        <p class="error"><%= login_error %> </p>
+        <% } %>
+        <input type="submit" value="Login!">
+    </fieldset>
+</form>
+
+<form action="/login/register" method="post">
+    <fieldset>
+        <legend>Register</legend>
+        <input type="text" placeholder="Username" name="user">
+        <input type="password" placeholder="Passphrase" name="password">
+        <input type="password" placeholder="Confirm your passphrase" name="confirmPassword">
+        <% if (locals.registration_error) { %>
+        <p class="error"><%= registration_error %> </p>
+        <% } %>
+        <input type="submit" value="Register!">
+    </fieldset>
+</form>
+
+</body>
+</html>
