@@ -5,17 +5,28 @@ let SocketModule = (function () {
 
         this.io = io;
 
-        this.io.on('connection', function (client) {
+        this.io.on('connection',  (client) => {
             console.log('Client connected...');
-            socket = client;
+            this.socket = client;
 
-            socket.emit("data", "test");
+
+            this.emitCommand(this.movementCommands.accelerate, null);
         });
 
-
+        // define constants for movementCommands
+        this.commands = {
+            left: "left",
+            right: "right",
+            break: "break",
+            accelerate: "accelerate"
+        }
     }
 
-
+    SocketModule.prototype.emitCommand = function(name, data){
+        if(name in this.movementCommands){
+            this.socket.emit(name, data);
+        }
+    };
 
     return SocketModule;
 })();

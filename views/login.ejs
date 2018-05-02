@@ -19,8 +19,8 @@
 <form action="/login" method="post">
     <fieldset>
         <legend>Login</legend>
-        <input type="text" placeholder="Username" name="user">
-        <input type="password" placeholder="Passphrase" name="password">
+        <input type="text" placeholder="Username" name="user" value="joske">
+        <input type="password" placeholder="Passphrase" name="password" value="vermeulen">
         <% if (locals.login_error) { %>
         <p class="error"><%= login_error %> </p>
         <% } %>
