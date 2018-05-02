@@ -2,6 +2,7 @@ const mysql = require('mysql');
 const User = require('../domain/User');
 const Highscore = require('../domain/Highscore');
 const Difficulty = require('../domain/Difficulty');
+const credentials = require('./../credentials');
 
 const Database = (function () {
 
@@ -24,10 +25,10 @@ const Database = (function () {
 
     let pool = null;
 
-    function Database(dbName, username, password) {
+    function Database(dbName) {
         config.database = dbName;
-        config.user = username;
-        config.password = password;
+        config.user = credentials.username;
+        config.password = credentials.password;
 
         pool = mysql.createPool(config);
     }

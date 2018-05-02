@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const sqluserService = require("./../persistence/mysqlUserService.js");
-const userService = new sqluserService("arduino_racer", "ben", "ben");
+const userService = new sqluserService("arduino_racer");
+
 
 router.get('/', function (req, res, next) {
     res.render('login.ejs');
