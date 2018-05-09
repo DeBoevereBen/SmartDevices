@@ -1,4 +1,4 @@
-var highscore = "/highscore/";
+var highscore = "/highscores/";
 var fps = 60;                      // how many 'update' frames per second
 var step = 1 / fps;                   // how long is each frame (in seconds)
 var width = 1024;                    // logical canvas width

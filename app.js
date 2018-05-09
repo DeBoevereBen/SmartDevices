@@ -5,8 +5,6 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 let socket = null;
 const session = require('express-session');
-const Database = require('./persistence/database.js');
-let db = new Database("arduino_racer");
 
 const sessionConfig = {
     key: 'mySessionCookieName',
@@ -30,19 +28,6 @@ app.post('/speed', function (req, res, next) {
     let message = req.body.message;
     arduino.write(`{${message}}`);
     res.end();
-});
-
-app.post("/highscore", function(req,res,next) {
-    if (req.body) {
-        let time = req.body.time;
-        let userID = req.session.user.id;
-        db.addHighscore(userID, time, "normal").then(function() {
-
-        }).catch(function(){
-
-        });
-    }
-    console.log(req.body.time);
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
