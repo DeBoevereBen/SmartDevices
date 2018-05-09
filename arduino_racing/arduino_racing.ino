@@ -1,15 +1,3 @@
-#include <LiquidCrystal.h>
-
-int rs = 3;
-int enable = 4;
-int d4 = 10;
-int d5 = 11;
-int d6 = 12;
-int d7 = 13;
-int columns = 16;
-int rows = 2;
-
-LiquidCrystal lcd(rs, enable, d4, d5, d6, d7);
 
 const byte maxCommandLength = 16;
 char receivedChars[maxCommandLength];
@@ -17,13 +5,12 @@ boolean commandAvailable = false;
 
 String writeCommand = "lcd write";
 
+int lcd_pwm = 11;
+
 void setup() {
   Serial.begin(9600);
   Serial.println("arduino ready");
-
-  lcd.begin(columns, rows);
-  lcd.clear();
-  lcd.print("Ready");
+  pinMode(lcd_pwm, OUTPUT);
 }
 
 void loop() {
@@ -68,12 +55,9 @@ void readCommand() {
 void doCommand() {
   if (commandAvailable) {
     String command(receivedChars);
-    command += " km/h";
-    Serial.println("Command: " +  command);
-    int startPos = round((columns - command.length()) / 2);
-    lcd.clear();
-    lcd.setCursor(startPos, 0);
-    lcd.print(command);
+    int speed = command.toInt();
+    Serial.write("arduino says: " + speed);
+    analogWrite(lcd_pwm, map(speed, 0, 120, 0, 255));
 
     commandAvailable = false;
   }
