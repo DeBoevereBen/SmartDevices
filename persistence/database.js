@@ -3,6 +3,7 @@ const User = require('../domain/User');
 const Highscore = require('../domain/Highscore');
 const Difficulty = require('../domain/Difficulty');
 const credentials = require('./../credentials');
+const util = require("../util");
 
 const Database = (function () {
 
@@ -126,7 +127,7 @@ const Database = (function () {
             .then(results => {
                 highscores = [];
                 results.forEach(result => {
-                    highscores.push(new Highscore(result.username, result.time, result.difficulty));
+                    highscores.push(new Highscore(result.username, util.formatTime(result.time), result.difficulty));
                 });
 
 

@@ -5,31 +5,61 @@
     <title>Javascript Racer - v4 (final)</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link href="common.css" rel="stylesheet" type="text/css" />
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
-
 <body>
+<nav>
+    <div class="nav-wrapper">
+        <a href="#" class="brand-logo center">Super duper racing app!</a>
+        <ul class="left">
+            <li><a href="logout"><i class="material-icons left">exit_to_app</i>Logout</a></li>
+            <% if (locals.username !== undefined) { %>
+            <li><i class="material-icons left">person</i>Welcome <%= username %></li>
+            <% } else { %>
+            <li><i class="material-icons left">person</i>Oops no user in the session!</li>
+            <% } %>
 
-<header>
-    <a href="logout">Logout</a>
-    <h1>Bla bla bla</h1>
-    <% if (locals.username !== undefined) { %>
-    <h2>Welcome <%= username %> </h2>
-    <% } else { %>
-    <h2>Oops no user in session</h2>
-    <% } %>
-</header>
-<div id="racer">
-    <div id="hud">
-        <span id="speed"            class="hud"><span id="speed_value" class="value">0</span> mph</span>
-        <span id="current_lap_time" class="hud">Time: <span id="current_lap_time_value" class="value">0.0</span></span>
-        <span id="last_lap_time"    class="hud">Last Lap: <span id="last_lap_time_value" class="value">0.0</span></span>
-        <span id="fast_lap_time"    class="hud">Fastest Lap: <span id="fast_lap_time_value" class="value">0.0</span></span>
+        </ul>
+        <ul class="right">
+            <li><a href="highscores"><i class="material-icons left">format_list_numbered</i>Highscores</a></li>
+        </ul>
     </div>
-    <canvas id="canvas">
-        Sorry, this example cannot be run because your browser does not support the &lt;canvas&gt; element
-    </canvas>
-    Loading...
+</nav>
+
+<!--<header>
+    <a href="logout">Logout</a>
+    <h1 class="title">Bla bla bla</h1>
+
+</header>-->
+
+<div id="carGame" class="row">
+
+    <div class="col s1">
+
+    </div>
+    <div class="col s5">
+        <div id="racer">
+            <div id="hud">
+                <span id="speed"            class="hud"><span id="speed_value" class="value">0</span> mph</span>
+                <span id="current_lap_time" class="hud">Time: <span id="current_lap_time_value" class="value">0.0</span></span>
+                <span id="last_lap_time"    class="hud">Last Lap: <span id="last_lap_time_value" class="value">0.0</span></span>
+                <span id="fast_lap_time"    class="hud">Fastest Lap: <span id="fast_lap_time_value" class="value">0.0</span></span>
+            </div>
+            <canvas id="canvas">
+                Sorry, this example cannot be run because your browser does not support the &lt;canvas&gt; element
+            </canvas>
+            Loading...
+        </div>
+    </div>
+    <div class="col s4">
+        <!-- Promo Content 3 goes here -->
+    </div>
+
 </div>
+
+
 
 <audio id='music'>
     <source src="music/racer.ogg">
@@ -37,6 +67,7 @@
 </audio>
 <!--<span id="mute"></span>-->
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
 <script src="stats.js"></script>
 <script src="common.js"></script>
 <script src="/javascripts/racingGame.js"></script>

@@ -57,7 +57,7 @@ const ArduinoSerial = (function () {
     }
 
     function write(data) {
-        console.log("sending to serial: " + data);
+        //console.log("sending to serial: " + data);
         this.port.write(data + "\n");
     }
 

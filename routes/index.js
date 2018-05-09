@@ -9,7 +9,8 @@ router.get('/', function (req, res, next) {
     if (user === undefined || user === null) {
         res.render("login");
     } else {
-        res.render("index");
+        let userObj = {username: user.username};
+        res.render("index", userObj);
     }
 });
 
