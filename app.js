@@ -47,13 +47,15 @@ app.post("/highscore", function(req,res,next) {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var loginRouter = require('./routes/login');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const loginRouter = require('./routes/login');
+const highscoreRouter = require('./routes/highscores');
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
+app.use('/highscores', highscoreRouter);
 
 
 // catch 404 and forward to error handler
