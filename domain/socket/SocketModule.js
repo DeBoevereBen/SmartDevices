@@ -1,18 +1,21 @@
 let SocketModule = (function () {
 
-    function SocketModule(io){
+    function SocketModule(io, arduino) {
         let socket = null;
 
         this.io = io;
+        this.arduino = arduino;
 
-        this.io.on('connection',  (client) => {
+        this.io.on('connection', (client) => {
             console.log('Client connected...');
             this.socket = client;
 
 
             this.emitCommand(this.movementCommands.accelerate, null);
 
-            this.socket.on("speed", data => console.log(data));
+            this.socket.on("speed", data => {
+                arduino.write(data);
+            });
         });
 
         // define constants for movementCommands
@@ -20,17 +23,19 @@ let SocketModule = (function () {
             left: "left",
             right: "right",
             break: "break",
-            accelerate: "accelerate"
+            accelerate: "accelerate",
+            volume: "volume"
         }
 
 
     }
 
-    SocketModule.prototype.emitCommand = function(name, data){
-        if(name in this.movementCommands){
+    SocketModule.prototype.emitCommand = function (name, data) {
+        if (name in this.movementCommands) {
             this.socket.emit(name, data);
         }
     };
+
 
     return SocketModule;
 })();

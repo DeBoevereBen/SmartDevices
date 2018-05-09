@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 let socket = null;
 const session = require('express-session');
+
 const sessionConfig = {
     key: 'mySessionCookieName',
     secret: "azerty123",
@@ -12,7 +13,6 @@ const sessionConfig = {
 };
 
 const app = express();
-const ArduinoSerial = require('./domain/socket/ArduinoSerial');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -30,16 +30,17 @@ app.post('/speed', function (req, res, next) {
     res.end();
 });
 
-
 app.use(express.static(path.join(__dirname, 'public')));
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var loginRouter = require('./routes/login');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const loginRouter = require('./routes/login');
+const highscoreRouter = require('./routes/highscores');
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
+app.use('/highscores', highscoreRouter);
 
 
 // catch 404 and forward to error handler
@@ -58,27 +59,5 @@ app.use(function (err, req, res, next) {
     res.render('error');
 });
 
-function onOpen() {
-    console.log("open connection");
-
-}
-
-function onReceiveData(data) {
-    console.log("Received data: " + data);
-
-
-    // socket.emit("temperature", data);
-}
-
-function write(data) {
-    console.log("sending to serial: " + data);
-    this.port.write(data + "\n");
-}
-
-// let arduino = new ArduinoSerial("COM5", 9600);
-// arduino.onOpen = onOpen.bind(arduino);
-// arduino.onReceiveData = onReceiveData.bind(arduino);
-// arduino.write = write.bind(arduino);
-// arduino.open();
 
 module.exports = app;
