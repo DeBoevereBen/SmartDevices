@@ -5,7 +5,10 @@ let db = new Db('arduino_racer');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    db.getAllHighscores().then(highscores => res.render('highscores', highscores));
+    db.getAllHighscores().then(function(highscores) {
+        console.log(highscores);
+        res.render('highscores', highscores)
+    });
 });
 
 router.post("/", function(req,res,next) {

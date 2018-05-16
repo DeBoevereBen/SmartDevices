@@ -1,5 +1,4 @@
 body {
-    padding: 50px;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -13,4 +12,22 @@ a {
 
 .succes {
     color: green;
+}
+
+.title {
+    font-size:3rem;
+}
+
+.title2 {
+    font-size:2rem;
+}
+
+#carGame {
+    margin-top:20px;
+}
+
+.col-centered {
+    float: none;
+    margin-right: auto;
+    margin-left: auto;
 }
