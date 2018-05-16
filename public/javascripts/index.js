@@ -49,7 +49,6 @@ function setVolume(volume){
 }
 
 function logSpeed(socket){
-
     let realSpeed =  5 * Math.round(speed/500);
     socket.emit("speed", realSpeed);
 }

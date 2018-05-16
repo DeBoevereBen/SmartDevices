@@ -14,7 +14,7 @@ let SocketModule = (function () {
             this.emitCommand(this.movementCommands.accelerate, null);
 
             this.socket.on("speed", data => {
-                arduino.write(data);
+                arduino.write(`{${data}}`);
             });
         });
 
