@@ -13,8 +13,8 @@ let SocketModule = (function () {
 
             this.emitCommand(this.movementCommands.accelerate, null);
 
-            this.socket.on("speed", data => {
-                arduino.write(`{${data}}`);
+            this.socket.on("lcd", data => {
+                arduino.write(`{lcd ${data}}`);
             });
         });
 
@@ -22,8 +22,10 @@ let SocketModule = (function () {
         this.movementCommands = {
             left: "left",
             right: "right",
+            straight: "straight",
             break: "break",
             accelerate: "accelerate",
+            uitbollen: "uitbollen",
             volume: "volume"
         }
 
@@ -31,8 +33,10 @@ let SocketModule = (function () {
     }
 
     SocketModule.prototype.emitCommand = function (name, data) {
-        if (name in this.movementCommands) {
-            this.socket.emit(name, data);
+        if (this.socket !== undefined) {
+            if (name in this.movementCommands) {
+                this.socket.emit(name, data);
+            }
         }
     };
 

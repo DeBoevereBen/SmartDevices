@@ -12,14 +12,14 @@ const ArduinoSerial = (function () {
 
         // default event listeners
         this.onOpen = onOpen;
-        this.onReceiveData = onReceiveData;
+        this.onReceiveData = onReceiveData.bind(this);
         this.write = write;
         this.showError = (err) => console.error(err);
     }
 
     ArduinoSerial.prototype.open = function () {
         let self = this;
-        this.port = new SerialPort(this.portname, { baudRate: this.baudRate });
+        this.port = new SerialPort(this.portname, {baudRate: this.baudRate});
 
         const parser = new ReadLine(); // tranform stream: emits data on a newline character by default, possible to pass other delimiter
         this.port.pipe(parser); // pipe the serial stream to the parser
@@ -27,7 +27,7 @@ const ArduinoSerial = (function () {
         this.port.on('open', this.onOpen);
         parser.on('data', this.onReceiveData);
         this.port.on('error', this.showError)
-    }
+    };
 
 
     function onOpen() {
@@ -36,24 +36,25 @@ const ArduinoSerial = (function () {
     }
 
     function onReceiveData(command) {
-        console.log("Received data: " + command);
+        if (this.websocket === undefined) {
+            return;
+        }
+        command = command.trim();
 
-        let movementCommands = ["left", "right", "break", "accelerate"];
-
-        // this should be "left", "right", "break" or "accelerate"
-        if(movementCommands.indexOf(command) !== -1){
-            websocket.emitCommand(command);
+        // console.log("Received data: " + command);
+        let movementCommands = ["left", "right", "straight", "break", "accelerate", "uitbollen"];
+        // this should be one of the movementCommands
+        if (movementCommands.indexOf(command) !== -1) {
+            this.websocket.emitCommand(command);
         }
 
         // volume command format: "volume 0.43"
         if(command.indexOf("volume") !== -1){
-            let volume = parseFloat(command.split(" ")[1]);
+            let volume = parseFloat(command.split(" ")[1])/1023;
 
-            websocket.emitCommand("volume", volume)
+            this.websocket.emitCommand("volume", volume)
         }
 
-
-        // socket.emit("temperature", data);
     }
 
     function write(data) {

@@ -15,6 +15,8 @@ int red_light_in = A2;
 int red_led = 2;
 int green_led = 3;
 
+int curr_speed = 0;
+
 void setup() {
   pinMode(lcd_input, INPUT);
   pinMode(red_light_in, INPUT);
@@ -38,24 +40,32 @@ void loop() {
 void doLightStuff() {
   int green_led_on = digitalRead(green_light_in);
   int red_led_on = digitalRead(red_light_in);
-  if (green_led_on == HIGH) {
+  if (green_led_on + red_led_on == LOW) {
     digitalWrite(red_led, LOW);
-    digitalWrite(green_led, HIGH);
-  }
-  if (red_led_on == HIGH) {
-    digitalWrite(red_led, HIGH);
     digitalWrite(green_led, LOW);
+  } else {
+    if (green_led_on == HIGH) {
+      digitalWrite(red_led, LOW);
+      digitalWrite(green_led, HIGH);
+    }
+    if (red_led_on == HIGH) {
+      digitalWrite(red_led, HIGH);
+      digitalWrite(green_led, LOW);
+    }
   }
 }
 
 void doSpeedStuff() {
   int motor_speed = analogRead(lcd_input);
   motor_speed = map(motor_speed, 0, 1024, 0, 120);
-  String text = String(motor_speed) + " km/h";
-  int startPos = round((columns - text.length()) / 2);
-  lcd.clear();
-  lcd.setCursor(startPos, 0);
-  lcd.print(text);
+  if (motor_speed >= curr_speed + 2 || motor_speed <= curr_speed - 2) {
+    curr_speed = motor_speed;
+    String text = String(motor_speed) + " km/h";
+    int startPos = round((columns - text.length()) / 2);
+    lcd.clear();
+    lcd.setCursor(startPos, 0);
+    lcd.print(text);
+  }
 }
 
 
