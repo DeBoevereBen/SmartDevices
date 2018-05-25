@@ -1,9 +1,13 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 const session = require('express-session');
+const debug = require('debug')('arduino-racer:server');
+const http = require('http');
+const SocketModule = require('./domain/socket/SocketModule');
+const ArduinoSerial = require('./domain/socket/ArduinoSerial');
 
 const sessionConfig = {
     key: 'mySessionCookieName',
@@ -23,13 +27,6 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(session(sessionConfig));
 
-app.post('/speed', function (req, res, next) {
-    console.log(req.body);
-    let message = req.body.message;
-    arduino.write(`{${message}}`);
-    res.end();
-});
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 const indexRouter = require('./routes/index');
@@ -41,7 +38,6 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
 app.use('/highscores', highscoreRouter);
-
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -59,38 +55,26 @@ app.use(function (err, req, res, next) {
     res.render('error');
 });
 
-var debug = require('debug')('arduino-racer:server');
-var http = require('http');
+
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+const server = http.createServer(app);
+const io = require('socket.io')(server);
+const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-/**
- * Create HTTP server.
- */
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
 
-var server = http.createServer(app);
-const io = require('socket.io')(server);
-const SocketModule = require('./domain/socket/SocketModule');
-const ArduinoSerial = require('./domain/socket/ArduinoSerial');
 let arduino = new ArduinoSerial("COM5", 9600);
 const socket = new SocketModule(io, arduino);
 arduino.websocket = socket;
 
 arduino.open();
-
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
 
 
 /**
@@ -152,7 +136,3 @@ function onListening() {
         : 'port ' + addr.port;
     debug('Listening on ' + bind);
 }
-
-
-
-module.exports = app;

@@ -20,7 +20,7 @@ router.post('/', function (req, res, next) {
             } else {
                 console.log(result);
                 req.session.user = result;
-                res.render("index", {username: result.username});
+                res.redirect("/");
             }
         })
         .catch(err => {
@@ -30,7 +30,6 @@ router.post('/', function (req, res, next) {
 });
 
 router.post('/register', function (req, res, next) {
-    console.log(req.body);
     let username = req.body.user;
     let password = req.body.password;
     if (password !== req.body.confirmPassword) {
@@ -51,17 +50,3 @@ router.post('/register', function (req, res, next) {
 });
 
 module.exports = router;
-
-/*
-router.get('/', function(req, res, next) {
-    userService
-        .findUser("joske","vermeule")
-        .then(result => {
-          if(result.notfound){
-            console.log("User not found");
-          } else {
-              console.log(user);
-          }
-        });
-  res.render('index', { title: 'Express' });
-*/

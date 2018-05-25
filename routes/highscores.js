@@ -6,7 +6,6 @@ let db = new Db('arduino_racer');
 /* GET home page. */
 router.get('/', function (req, res, next) {
     db.getAllHighscores().then(function(highscores) {
-        console.log(highscores);
         res.render('highscores', highscores)
     });
 });
@@ -17,7 +16,7 @@ router.post("/", function(req,res,next) {
         let userID = req.session.user.id;
         db.addHighscore(userID, time, "normal").then(function() {
         }).catch(function(){
-
+            console.log("couldn't add highscore"); //just log
         });
     }
 });
