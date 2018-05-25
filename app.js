@@ -27,16 +27,33 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(session(sessionConfig));
 
+
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
+
+const loginRouter = require('./routes/login');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const loginRouter = require('./routes/login');
 const highscoreRouter = require('./routes/highscores');
+
+
+
+app.use('/login', loginRouter);
+
+app.use('/', function (req, res, next) {
+    let user = req.session.user;
+
+    if (user === undefined || user === null) {
+        res.render("login");
+        return;
+    }
+    next();
+});
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/login', loginRouter);
 app.use('/highscores', highscoreRouter);
 
 // catch 404 and forward to error handler

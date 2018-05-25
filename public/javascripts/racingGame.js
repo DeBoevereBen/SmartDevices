@@ -126,9 +126,10 @@ function update(dt) {
         if (currentLapTime && (startPosition < playerZ)) {
             lastLapTime = currentLapTime;
             currentLapTime = 0;
+            updateHighscores(lastLapTime);
             if (lastLapTime <= Util.toFloat(Dom.storage.fast_lap_time)) {
                 Dom.storage.fast_lap_time = lastLapTime;
-                updateHighscores(lastLapTime);
+
                 updateHud('fast_lap_time', formatTime(lastLapTime));
                 Dom.addClassName('fast_lap_time', 'fastest');
                 Dom.addClassName('last_lap_time', 'fastest');

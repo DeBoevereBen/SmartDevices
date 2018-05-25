@@ -10,9 +10,6 @@ let SocketModule = (function () {
             console.log('Client connected...');
             this.socket = client;
 
-
-            this.emitCommand(this.movementCommands.accelerate, null);
-
             this.socket.on("lcd", data => {
                 arduino.write(`{lcd ${data}}`);
             });

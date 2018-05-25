@@ -28,14 +28,12 @@
     <table>
         <tr>
             <th>Username</th>
-            <th>Time (min)</th>
-            <th>Difficulty</th>
+            <th>Time</th>
         </tr>
         <% highscores.forEach(highscore => { %>
         <tr>
             <td><%= highscore.username %></td>
             <td><%= highscore.time %></td>
-            <td><%= highscore.difficulty %></td>
         </tr>
         <% }) %>
     </table>

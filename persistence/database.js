@@ -18,7 +18,8 @@ const Database = (function () {
         FIND_ALL_HIGHSCORES: "select u.username, d.name as difficulty, h.time " +
         "from highscores h " +
         "join users u on h.userId = u.id " +
-        "join difficulty d on d.id = h.difficultyId",
+        "join difficulty d on d.id = h.difficultyId " +
+        "order by h.time",
         ADD_HIGHSCORE: "INSERT INTO highscores(userId, time, difficultyId) VALUES(?,?,?)",
         ADD_USER: "INSERT INTO users(username, password) VALUES(?, ?)",
         CHECK_USERNAME_UNIQUE: "SELECT * FROM users WHERE username = ?"
